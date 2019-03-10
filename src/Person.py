@@ -1,9 +1,8 @@
-
 class Person():
 
     def __init__(self, first_name, last_name):
-        self.first_name = first_name
-        self.last_name = last_name
+        self.first_name = first_name.capitalize()
+        self.last_name = last_name.capitalize()
         self.age = 0
         self.gender = None
         self.dad = None
@@ -30,7 +29,7 @@ class Person():
         return f'{self.first_name} {self.last_name}'
 
     def __repr__(self):
-        return f'First name: {self.first_name}, Last Name: {self.last_name}'
+        return f'First name: {self.first_name}, Last Name: {self.last_name}, Energy: {self.energy}'
 
 def main():
     pass

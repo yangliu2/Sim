@@ -1,10 +1,9 @@
-class Food():
+from src.Thing import Thing
 
-    def __init__(self, value, name):
-        self.max_value = value
-        self.value = value
-        self.name = name
-        self.exist = True
+class Food(Thing):
+
+    def __init__(self, name, value):
+        super().__init__(self, name, value)
 
     def __str__(self):
         if self.value == self.max_value:

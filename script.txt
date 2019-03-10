@@ -1,4 +1,5 @@
 from src.Person import Person
 from src.Food import Food
+from src.Matrix import Matrix
 yang = Person('Yang', 'Liu')
 apple = Food(7, 'apple')
