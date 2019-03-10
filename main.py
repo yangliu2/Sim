@@ -1,18 +1,7 @@
 from src.Matrix import Matrix
 from src.Person import Person
 from src.Food import Food
-
-
-def logo():
-    logo = """
-	         _____    __       _        ____     ___    _______   ___   
-	        /    /   /  |     / |    /     /    /   \      /     /   \  
-	       /____/   /___|    /  |   /     /    /     \    /     /     \ 
-	      /        /    |   /   |  /     /     \     /   /      \     / 
-	     /        /     |  /    |_/     /____   \___/   /        \___/  
-	    ----------------------------------------------------------------
-    """
-    print(logo)
+from util.Utils import display_logo, ignored
 
 def load_commands(matrix):
     commands = {
@@ -26,7 +15,7 @@ def load_commands(matrix):
     return commands
 
 def menu(): 
-    logo()
+    display_logo()
     response = ""
 
     matrix = Matrix()
@@ -38,13 +27,17 @@ def menu():
         words = response.split(' ')
         command = words[0]
         args = words[1:]
-
-        if command.lower() in list(commands.keys()):
-            commands[command](*args)
-        elif command.lower() == 'exit':
-            print(f"Later ya'll!")
-        else:
-            print(f'Cannot recognize command!') 
+        
+        try:
+            if command.lower() in list(commands.keys()):
+                commands[command](*args)
+            elif command.lower() == 'exit':
+                print(f"Later ya'll!")
+            else:
+                print(f'Cannot recognize command!') 
+        except TypeError as e:
+            print(f'Command format was wrong!')
+            print(e)
 
 def main():
     menu()

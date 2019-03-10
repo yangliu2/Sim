@@ -1,29 +1,36 @@
 from src.Person import Person
 from src.Food import Food
+from util.Utils import pline
 
 class Matrix():
 
     def __init__(self):
-        self.people_list = []
-        self.food_list = []
+        self.people_dict = {}
+        self.food_list = {}
 
     def create_person(self, first_name, last_name):
         person = Person(first_name, last_name)
         print(f'{person} created.')
-        self.people_list.append(person)
+        self.people_dict[person.name] = person
 
     def list_people(self):
-        for index, person in enumerate(self.people_list):
-            print(f'{index+1}. {person.first_name} {person.last_name}')
+        if not self.people_dict:
+            print(f'No people exist.')
+
+        for person in self.people_dict:
+            print(f'{person}')
 
     def create_food(self, name, value):
         food = Food(name, value)
         print(f'{food} created.')
-        self.food_list.append(food)
+        self.food_list[food.name] = food
 
     def list_food(self):
-        for index, food in enumerate(self.food_list):
-            print(f'{index+1}. {food.name}')
+        if not self.food_list:
+            print(f'No food exist.')
+
+        for food in self.food_list:
+            print(f'{food}')
 
     def run_iter(self, num):
         for i in range(num):
