@@ -6,10 +6,7 @@ class Food(Thing):
         super().__init__(name.capitalize(), value)
 
     def __str__(self):
-        if self.value == self.max_value:
-            return f'A fresh {self.name}'
-        elif self.value < (self.max_value / 2):
-            return f'A half aten {self.name}'
+        return f'Name: {self.name}, Value: {self.value}'
         
     def __repr__(self):
         return f'Name: {self.name}, Value: {self.value}'

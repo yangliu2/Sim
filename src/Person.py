@@ -5,7 +5,7 @@ class Person(Entity):
     def __init__(self, first_name, last_name):
         self.first_name = first_name.capitalize()
         self.last_name = last_name.capitalize()
-        super().__init__(f'{self.first_name} {self.last_name}')
+        super().__init__(f'{self.first_name}_{self.last_name}')
 
         self.age = 0
         self.gender = None
@@ -15,7 +15,7 @@ class Person(Entity):
         self.energy = 0
         self.aptite = 0 # 1-10, hungry to full
 
-    def _eat(self, food):
+    def eat(self, food):
         if self.energy > 10:
             print(f'Full.')
         else:
@@ -30,7 +30,7 @@ class Person(Entity):
                 print(f'{self.name} ate some {food.name}. And they are no longer hungrey.')
     
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        return f'First name: {self.first_name}, Last Name: {self.last_name}, Energy: {self.energy}'
 
     def __repr__(self):
         return f'First name: {self.first_name}, Last Name: {self.last_name}, Energy: {self.energy}'

@@ -10,7 +10,7 @@ class Matrix():
 
     def create_person(self, first_name, last_name):
         person = Person(first_name, last_name)
-        print(f'{person} created.')
+        print(f'{person.name} created.')
         self.people_dict[person.name] = person
 
     def list_people(self):
@@ -20,9 +20,15 @@ class Matrix():
         for person in self.people_dict:
             print(f'{person}')
 
+    def show_person(self, name):
+        if name in self.people_dict:
+            print(f'{self.people_dict[name]}')
+        else:
+            print(f'Cannot find the person you are searching.')
+
     def create_food(self, name, value):
         food = Food(name, value)
-        print(f'{food} created.')
+        print(f'{food.name} created.')
         self.food_list[food.name] = food
 
     def list_food(self):
