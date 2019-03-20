@@ -19,21 +19,26 @@ class Person(Entity):
         self.alive = True
         self.aptite = 0 # 1-10, hungry to full
         self.possession = []
+        self.status = (
+            f"First name: {self.first_name}, "
+            f"Last Name: {self.last_name}, "
+            f"Gender: {self.gender}, "
+            f"Health: {self.health}, "
+            f"Energy: {self.energy}, "
+            f"Possessions: {self.possession}"
+        )
 
     def eat_food(self, food):
-        print(f'eating {food}')
-        if self.energy > 10:
-            print(f'Full.')
+
+        need = 10 - self.energy
+        if food.value < need:
+            self.energy += food.value
+            food.value = 0
+            print(f'{self.name} ate some {food.name}. But they are still hungrey.')
         else:
-            need = 10 - self.energy
-            if food.hunger_value < need:
-                self.energy += food.hunger_value
-                food.value = 0
-                print(f'{self.name} ate some {food.name}. But they are still hungrey.')
-            else:
-                self.energy += need
-                food.hunger_value -= need
-                print(f'{self.name} ate some {food.name}. And they are no longer hungrey.')
+            self.energy += need
+            food.value -= need
+            print(f'{self.name} ate some {food.name}. And they are no longer hungrey.')
 
     def get_food_list(self):
         food_list = []
@@ -44,34 +49,25 @@ class Person(Entity):
 
     def eat(self):
         food_list = self.get_food_list()
-        print(food_list)
         if food_list:
             food = random.choice(food_list)
             self.eat_food(food)
     
     def __str__(self):
-        possession = [x.name for x in self.possession]
-        status = f"First name: {self.first_name} \
-                        Last Name: {self.last_name} \
-                        Gender: {self.gender} \
-                        Health: {self.health} \
-                        Energy: {self.energy} \
-                        Possessions: {possession}"
-        return status
+        return self.status
 
     def __repr__(self):
-        possession = [x.name for x in self.possession]
-        status = f"First name: {self.first_name} \
-                        Last Name: {self.last_name} \
-                        Gender: {self.gender} \
-                        Health: {self.health} \
-                        Energy: {self.energy} \
-                        Possessions: {possession}"
-        return status
+        return self.status
+
+    def __eq__(self, other):
+        return self.name == other.name
 
     def calc_expense(self):
         if self.energy <= 0:
             self.health -= 1
+        elif (self.energy > 0) and (self.health < 10):
+            self.health += 1
+            self.energy -= 1
         else:
             self.energy -= 1
 
@@ -88,6 +84,20 @@ class Person(Entity):
         if self.health <= 0:
             self.alive = False
         
+        # updating status
+        poss = "None"
+        if self.possession:
+            possession = [x.name for x in self.possession]
+            poss = " ".join(possession)
+
+        self.status = (
+            f"First name: {self.first_name}, "
+            f"Last Name: {self.last_name}, "
+            f"Gender: {self.gender}, "
+            f"Health: {self.health}, "
+            f"Energy: {self.energy}, "
+            f"Possessions: {poss}"
+        )
 
 def main():
     pass

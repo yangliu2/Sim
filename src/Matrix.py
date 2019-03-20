@@ -38,15 +38,20 @@ class Matrix():
         else:
             print(f'Cannot find the person you are searching.')
 
-    def assign_item(self, thing, person):
-        if person in self.people_dict:
+    def assign_item(self, thing, first_name, last_name):
+        person = f'{first_name.capitalize()}_{last_name.capitalize()}'
+        if (person in self.people_dict) and (thing in self.thing_dict):
             person_object = self.people_dict[person]
             thing = self.thing_dict[thing.capitalize()]
             thing.owner = person_object
             person_object.possession.append(thing)
             person_object.check_status()
-        else:
+        elif (person in self.people_dict) and (thing not in self.thing_dict):
+            print(f"That thing doesn't exist!")
+        elif (person not in self.people_dict) and (thing in self.thing_dict):
             print(f"That person doesn't exist!")
+        else:
+            print(f"Neither that person or the thing exist!")
 
     def create_food(self, name, value):
         food = Food(name, value)
@@ -59,7 +64,7 @@ class Matrix():
             thing_object = self.thing_dict[thing]
             person = thing_object.owner
             person.possession.remove(thing_object)
-            del self.thing_dict[thing]
+            del self.thing_dict[thing_object]
         else:
             print('That thing does not exist!')
 
@@ -81,7 +86,7 @@ class Matrix():
             person_object = self.people_dict[key]
             
             person_object.run_one_turn()
-            print(f'found {person_object}')
+            # print(f'found {person_object}')
 
             if not person_object.alive:
                 del self.people_dict[key]
@@ -95,3 +100,4 @@ class Matrix():
                 
                 owner = item_object.owner
                 owner.possession.remove(item_object)
+                owner.check_status()
