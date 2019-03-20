@@ -31,10 +31,13 @@ class Portal():
     def load_commands(self):
         commands = {
             'create_person': self.matrix.create_person,
+            'remove_person': self.matrix.delete_person,
             'list_people': self.matrix.list_people,
             'create_food': self.matrix.create_food,
-            'list_food': self.matrix.list_food,
-            'run_iter': self.matrix.run_iter,
+            'remove_item': self.matrix.delete_thing,
+            'assign': self.matrix.assign_item,
+            'list_item': self.matrix.list_thing,
+            'run_n_turn': self.matrix.run_n_turn,
             'focus': self.matrix.show_person
         }
         return commands
@@ -51,16 +54,16 @@ def menu():
         command = words[0]
         args = words[1:]
         
-        try:
-            if command.lower() in portal.commands:
-                portal.commands[command](*args)
-            elif command.lower() == 'exit':
-                print(f"Later ya'll!")
-            else:
-                print(f'Cannot recognize command!') 
-        except TypeError as e:
-            print(f'Command format was wrong!')
-            print(e)
+        # try:
+        if command.lower() in portal.commands:
+            portal.commands[command](*args)
+        elif command.lower() == 'exit':
+            print(f"Later ya'll!")
+        else:
+            print(f'Cannot recognize command!') 
+        # except TypeError as e:
+        #     print(f'Command format was wrong!')
+        #     print(e)
 
         # save matrix
         portal.save_matrix()

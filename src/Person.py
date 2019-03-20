@@ -1,39 +1,93 @@
 from src.Entity import Entity
+import random
+import src.config as CFG
 
 class Person(Entity):
 
     def __init__(self, first_name, last_name):
         self.first_name = first_name.capitalize()
         self.last_name = last_name.capitalize()
-        super().__init__(f'{self.first_name}_{self.last_name}')
+        name = f'{self.first_name}_{self.last_name}'
+        super().__init__(name)
 
         self.age = 0
-        self.gender = None
+        self.gender = random.choice(['MALE', 'FEMALE'])
         self.dad = None
         self.mom = None
-        self.health = 0
-        self.energy = 0
+        self.health = 10
+        self.energy = 10
+        self.alive = True
         self.aptite = 0 # 1-10, hungry to full
+        self.possession = []
 
-    def eat(self, food):
+    def eat_food(self, food):
+        print(f'eating {food}')
         if self.energy > 10:
             print(f'Full.')
         else:
             need = 10 - self.energy
-            if food.value < need:
-                self.energy += food.value
+            if food.hunger_value < need:
+                self.energy += food.hunger_value
                 food.value = 0
                 print(f'{self.name} ate some {food.name}. But they are still hungrey.')
             else:
                 self.energy += need
-                food.value -= need
+                food.hunger_value -= need
                 print(f'{self.name} ate some {food.name}. And they are no longer hungrey.')
+
+    def get_food_list(self):
+        food_list = []
+        for item in self.possession:
+            if item.type == 'FOOD':
+                food_list.append(item)
+        return food_list
+
+    def eat(self):
+        food_list = self.get_food_list()
+        print(food_list)
+        if food_list:
+            food = random.choice(food_list)
+            self.eat_food(food)
     
     def __str__(self):
-        return f'First name: {self.first_name}, Last Name: {self.last_name}, Energy: {self.energy}'
+        possession = [x.name for x in self.possession]
+        status = f"First name: {self.first_name} \
+                        Last Name: {self.last_name} \
+                        Gender: {self.gender} \
+                        Health: {self.health} \
+                        Energy: {self.energy} \
+                        Possessions: {possession}"
+        return status
 
     def __repr__(self):
-        return f'First name: {self.first_name}, Last Name: {self.last_name}, Energy: {self.energy}'
+        possession = [x.name for x in self.possession]
+        status = f"First name: {self.first_name} \
+                        Last Name: {self.last_name} \
+                        Gender: {self.gender} \
+                        Health: {self.health} \
+                        Energy: {self.energy} \
+                        Possessions: {possession}"
+        return status
+
+    def calc_expense(self):
+        if self.energy <= 0:
+            self.health -= 1
+        else:
+            self.energy -= 1
+
+    def calc_need(self):
+        if self.energy < CFG.hunger_check:
+            self.eat()
+
+    def run_one_turn(self):
+        self.calc_need()
+        self.calc_expense()
+        self.check_status()
+
+    def check_status(self):
+        if self.health <= 0:
+            self.alive = False
+        
 
 def main():
     pass
