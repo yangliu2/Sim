@@ -40,6 +40,7 @@ class Matrix():
 
     def assign_item(self, thing, first_name, last_name):
         person = f'{first_name.capitalize()}_{last_name.capitalize()}'
+        thing = thing.capitalize()
         if (person in self.people_dict) and (thing in self.thing_dict):
             person_object = self.people_dict[person]
             thing = self.thing_dict[thing.capitalize()]

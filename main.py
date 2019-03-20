@@ -37,7 +37,7 @@ class Portal():
             'remove_item': self.matrix.delete_thing,
             'assign': self.matrix.assign_item,
             'list_item': self.matrix.list_thing,
-            'run_n_turn': self.matrix.run_n_turn,
+            'run_turns': self.matrix.run_n_turn,
             'focus': self.matrix.show_person
         }
         return commands
