@@ -1,4 +1,5 @@
 from src.Person import Person
+from src.Baby import Baby
 from src.Food import Food
 from util.Utils import pline
 
@@ -23,6 +24,10 @@ class Matrix():
             del self.people_dict[name]
         else:
             print('That person does not exist!')
+
+    def create_baby(self):
+        baby = Baby()
+        self.people_dict[baby.name] = baby
 
     def list_people(self):
         if not self.people_dict:
@@ -72,10 +77,13 @@ class Matrix():
     def list_thing(self):
         if not self.thing_dict:
             print(f"Nothing exisit yet.")
-
+            
         for thing in self.thing_dict:
             thing_object = self.thing_dict[thing]
-            print(f'{thing_object.name}, {thing_object.type}, {thing_object.owner.name}')
+            if thing_object.owner:
+                print(f'{thing_object.name}, {thing_object.id}, {thing_object.type}, {thing_object.owner.name}')
+            else:
+                print(f'{thing_object.name}, {thing_object.id}, {thing_object.type}, {thing_object.owner}')
 
     def run_n_turn(self, num):
         print(f'Iter: {num} turns.')

@@ -1,4 +1,6 @@
 from contextlib import contextmanager
+import src.config as CFG
+import pickle
 
 def display_logo():
     logo = """
@@ -22,3 +24,8 @@ def ignored(*exceptions):
 
 def pline(text):
 	return text + '\n'
+
+def load_matrix():
+	with open(CFG.default_matrix, 'rb') as handle:
+		matrix = pickle.load(handle)
+	return matrix

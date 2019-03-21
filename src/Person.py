@@ -17,11 +17,11 @@ class Person(Entity):
         self.health = 10
         self.energy = 10
         self.alive = True
-        self.aptite = 0 # 1-10, hungry to full
         self.possession = []
         self.status = (
             f"First name: {self.first_name}, "
             f"Last Name: {self.last_name}, "
+            f"ID: {self.id}, "
             f"Gender: {self.gender}, "
             f"Health: {self.health}, "
             f"Energy: {self.energy}, "
@@ -60,7 +60,7 @@ class Person(Entity):
         return self.status
 
     def __eq__(self, other):
-        return self.name == other.name
+        return self.id == other.id
 
     def calc_expense(self):
         if self.energy <= 0:
