@@ -13,16 +13,16 @@ def menu():
         command = words[0]
         args = words[1:]
         
-        # try:
-        if command.lower() in portal.commands:
-            portal.commands[command](*args)
-        elif command.lower() == 'exit':
-            print(f"Later ya'll!")
-        else:
-            print(f'Cannot recognize command!') 
-        # except TypeError as e:
-        #     print(f'Command format was wrong!')
-        #     print(e)
+        try:
+            if command.lower() in portal.commands:
+                portal.commands[command](*args)
+            elif command.lower() == 'exit':
+                print(f"Later ya'll!")
+            else:
+                print(f'Cannot recognize command!') 
+        except TypeError as e:
+            print(f'Command format was wrong!')
+            print(e)
 
         # save matrix
         portal.save_matrix()

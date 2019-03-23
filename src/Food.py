@@ -6,10 +6,8 @@ class Food(Thing):
         super().__init__(name.capitalize(), int(value), 'FOOD')
 
     def __str__(self):
-        return f'{self.name}, {self.id}'
+        return f'{self.name}'
         
     def __repr__(self):
-        return f'{self.name}, {self.id}'
+        return f'{self.name}'
 
-    def __eq__(self, other):
-        return self.id == other.id

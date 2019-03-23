@@ -81,9 +81,9 @@ class Matrix():
         for thing in self.thing_dict:
             thing_object = self.thing_dict[thing]
             if thing_object.owner:
-                print(f'{thing_object.name}, {thing_object.id}, {thing_object.type}, {thing_object.owner.name}')
+                print(f'{thing_object.name}, {thing_object.type}, {thing_object.owner.name}')
             else:
-                print(f'{thing_object.name}, {thing_object.id}, {thing_object.type}, {thing_object.owner}')
+                print(f'{thing_object.name}, {thing_object.type}, {thing_object.owner}')
 
     def run_n_turn(self, num):
         print(f'Iter: {num} turns.')

@@ -24,8 +24,7 @@ class Baby(Person):
         if male_list and female_list:
             mom = random.choice(female_list)
             dad = random.choice(male_list)
+            return people_dict[mom], people_dict[dad]
         else:
             print("Was not able to find a mom and a dad!")
-
-        return people_dict[mom], people_dict[dad]
         
