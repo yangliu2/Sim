@@ -1,5 +1,5 @@
-from src.Portal import Portal
-from util.Utils import display_logo
+from panzoto.Portal import Portal
+from panzoto.Utils import display_logo
 
 def menu(): 
     display_logo()
