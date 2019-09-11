@@ -1,6 +1,6 @@
 from panzoto.Person import Person
 import random
-from panzoto.Utils import load_matrix
+from panzoto.Utils import load_matrix, timer
 
 class Baby(Person):
     def __init__(self):

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup
 
 setup(name='panzoto',
-      version='1.0',
+      version='0.1',
       description='Population simulator',
       author='Yang Liu',
       author_email='yangliu3456@gmail.com',

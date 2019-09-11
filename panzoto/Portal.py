@@ -1,8 +1,8 @@
 import os
+import pickle
 import panzoto.config as CFG
 from panzoto.Matrix import Matrix
-import pickle
-from panzoto.Utils import load_matrix
+from panzoto.Utils import load_matrix, timer
 
 class Portal():
     def __init__(self):
@@ -16,6 +16,7 @@ class Portal():
         # load commands
         self.commands = self.load_commands()
 
+    @timer
     def save_matrix(self):
         if os.path.exists(CFG.default_matrix):
             with open(CFG.default_matrix, 'wb') as handle:

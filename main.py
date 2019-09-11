@@ -3,10 +3,11 @@ from panzoto.Utils import display_logo
 
 def menu(): 
     display_logo()
-
+    portal = Portal()
+    
     response = ""
     while response != 'exit':
-        portal = Portal()
+
         response = input("> ")
 
         words = response.split(' ')
@@ -24,8 +25,8 @@ def menu():
             print(f'Command format was wrong!')
             print(e)
 
-        # save matrix
-        portal.save_matrix()
+    # save matrix
+    portal.save_matrix()
 
 def main():
     menu()
