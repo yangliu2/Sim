@@ -1,4 +1,4 @@
 # Sim
 Pet project for human simulation
 
-`script.txt` are used as an example to start using it
+Run `python main.py` to start the interaction in prompt

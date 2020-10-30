@@ -1,30 +1,49 @@
+""" Babies are when Person starts from the beginning """
+
 from panzoto.person import Person
+from typing import Tuple
 import random
-from panzoto.utils import load_matrix, timer
+from panzoto.utils import load_matrix, timer, log
+from panzoto.enums import Gender, Logging
+from panzoto.portal import Portal
 
 class Baby(Person):
     def __init__(self):
         mom, dad = self._born()
         super().__init__(mom.first_name, dad.last_name)
+        log(text=f"A baby named {mom.first_name} {dad.last_name} was born.",
+            level=Logging.INFO.value)
 
-    def _born(self):
+    @timer
+    def _born(self) -> Tuple[Person, Person]:
+        """Simulate the born process. Choose random mom and dad.
+
+        Returns:
+            Tuple[Person, Person]: Two person objects: mom and dad
+        """
         matrix = load_matrix()
         people_dict = matrix.people_dict
         
         male_list = []
         female_list = []
         for key in people_dict:
-            if people_dict[key].gender == 'FEMALE':
+            if people_dict[key].gender == Gender.FEMALE.value:
                 female_list.append(key)
-            elif people_dict[key].gender == 'MALE':
+            elif people_dict[key].gender == Gender.MALE.value:
                 male_list.append(key)
             else:
-                print(f'Gender is undefined!')
-        
+                log(text=f'Some gender are undefined',
+                    level=Logging.ERROR.value)
+
+
         if male_list and female_list:
             mom = random.choice(female_list)
             dad = random.choice(male_list)
             return people_dict[mom], people_dict[dad]
         else:
-            print("Was not able to find a mom and a dad!")
+            log(text=f"Was not able to find a mom and a dad!",
+                level=Logging.INFO.value)
+
+        portal = Portal()
+        portal.save_matrix()
         

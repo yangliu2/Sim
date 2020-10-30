@@ -1,17 +1,19 @@
 from panzoto.entity import Entity
 import random
 import panzoto.config as CFG
+from panzoto.enums import Gender
 
 class Person(Entity):
 
     def __init__(self, first_name, last_name):
         self.first_name = first_name.capitalize()
         self.last_name = last_name.capitalize()
-        name = f'{self.first_name}_{self.last_name}'
-        super().__init__(name)
+        self.name = f'{self.first_name}_{self.last_name}'
+        self.full_name = f'{first_name.capitalize()}_{last_name.capitalize()}'
+        super().__init__(self.name)
 
         self.age = 0
-        self.gender = random.choice(['MALE', 'FEMALE'])
+        self.gender = random.choice([Gender.FEMALE.value, Gender.MALE.value])
         self.dad = None
         self.mom = None
         self.health = 10

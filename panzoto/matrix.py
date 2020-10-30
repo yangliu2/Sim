@@ -1,7 +1,11 @@
+""" Matrix object to create the world """
+
+from uuid import UUID
 from panzoto.person import Person
 from panzoto.baby import Baby
 from panzoto.food import Food
-from panzoto.utils import pline
+from panzoto.utils import log_output
+
 
 class Matrix():
 
@@ -9,50 +13,108 @@ class Matrix():
         self.people_dict = {}
         self.thing_dict = {}
 
+    @staticmethod
+    def get_full_name(first_name: str,
+                      last_name: str) -> str:
+        """Generate the name of the person as a continous string
+
+        Args:
+            first_name (str): first name
+            last_name (str): last name
+
+        Returns:
+            str: full name in continous string
+        """
+        return f'{first_name.capitalize()}_{last_name.capitalize()}'
+
+    @log_output
     def create_person(self, 
                       first_name: str, 
-                      last_name: str) -> None:
+                      last_name: str) -> str:
         """create a person using first and last name
 
         Args:
             first_name (str): first name    
             last_name (str): last name
-        """
-        name = f'{first_name.capitalize()}_{last_name.capitalize()}'
-        if name in self.people_dict:
-            print('Person already exist!')
-        else:
-            person = Person(first_name, last_name)
-            print(f'{person.name} created.')
-            self.people_dict[person.name] = person
 
-    def delete_person(self, first_name, last_name):
-        name = f'{first_name.capitalize()}_{last_name.capitalize()}'
-        if name in self.people_dict:
-            del self.people_dict[name]
+        Returns:
+            str: all the output in from the function
+        """
+
+        output = ""
+
+        person = Person(first_name, last_name)
+        output += f'{person.name} created.'
+        self.people_dict[person.uid] = person
+
+        return output
+
+    @log_output
+    def delete_person(self, 
+                      uid: str) -> str:
+        """Remove a person from the matrix using uid string
+
+        Args:
+            uid (str): uuid string
+
+        Returns:
+            str: output from this function
+        """
+
+        output = ""
+
+        id = UUID(uid)
+        if id in self.people_dict:
+            del self.people_dict[id]
         else:
-            print('That person does not exist!')
+            output += 'That person does not exist!'
+
+        return output
 
     def create_baby(self):
         baby = Baby()
-        self.people_dict[baby.name] = baby
+        self.people_dict[baby.uid] = baby
 
+    @log_output
     def list_people(self):
+        output = ""
         if not self.people_dict:
-            print(f'No people exist.')
+            output += 'No people exist.'
 
         for person in self.people_dict:
-            print(f'{person}')
+            output += f'{self.people_dict[person].name}\n'
+        
+        return output
 
-    def show_person(self, first_name, last_name):
-        name = f'{first_name.capitalize()}_{last_name.capitalize()}'
-        if name in self.people_dict:
-            print(f'{self.people_dict[name]}')
+    @log_output
+    def show_person(self, 
+                    first_name: str, 
+                    last_name: str) -> str:
+        """Show info about a specific person
+
+        Args:
+            first_name (str): first name
+            last_name (str): last name
+
+        Returns:
+            str: output of this function
+        """
+        output = ""
+        name = self.get_full_name(first_name=first_name,
+                                  last_name=last_name)
+        target_list = [str(self.people_dict[x]) for x in self.people_dict
+                       if name == self.people_dict[x].full_name]
+
+        if target_list:
+            output += "\n".join(target_list)
         else:
-            print(f'Cannot find the person you are searching.')
+            output += f'Cannot find the person you are searching.'
+        
+        return output
 
     def assign_item(self, thing, first_name, last_name):
-        person = f'{first_name.capitalize()}_{last_name.capitalize()}'
+        person = self.get_full_name(first_name=first_name,
+                            last_name=last_name)
         thing = thing.capitalize()
         if (person in self.people_dict) and (thing in self.thing_dict):
             person_object = self.people_dict[person]
@@ -65,7 +127,7 @@ class Matrix():
         elif (person not in self.people_dict) and (thing in self.thing_dict):
             print(f"That person doesn't exist!")
         else:
-            print(f"Neither that person or the thing exist!")
+            print(f"Neither that person nor the thing exist!")
 
     def create_food(self, name, value):
         food = Food(name, value)

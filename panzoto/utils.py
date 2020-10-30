@@ -1,12 +1,18 @@
 from contextlib import contextmanager
+from pickle import LONG
 import panzoto.config as CFG
 import pickle
 import functools
 import time
 import logging
+from panzoto.enums import Logging, Names
+from typing import Callable
 
-logging.basicConfig(filename='panzoto.log', filemode='w', level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+	filename=f'{Names.PANZOTO.value}.log', 
+	filemode='a', 
+	level=logging.INFO,
+	format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
 def display_logo():
@@ -49,3 +55,35 @@ def timer(func):
         logging.info(f"Finished {func.__name__!r} in {run_time:.4f} secs")
         return value
     return wrapper_timer
+
+def log_output(func: Callable):
+	"""A decorator that will log the output string returned from a function
+
+	Args:
+		func (Callable): function that the decorator is for
+	"""
+	def wrapper_log(*args, **kwargs):
+		output = func(*args, **kwargs)
+		log(text=output, 
+			level=Logging.INFO.value)
+		return output
+	return wrapper_log
+
+def log(text: str,
+		level: str) -> None:
+	"""logging using a central function
+
+	Args:
+		text (str): logging text
+		level (str): logging level
+	"""
+	if level == Logging.ERROR.value:
+		logging.error(text)
+	elif level == Logging.DEBUG.value:
+		logging.debug(text)
+	elif level == Logging.WARNING.value:
+		logging.waring(text)
+	else:
+		logging.info(text)
+
+	print(text)

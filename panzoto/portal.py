@@ -48,6 +48,14 @@ class Portal():
             'assign': self.matrix.assign_item,
             'list_item': self.matrix.list_thing,
             'run_turns': self.matrix.run_n_turn,
-            'focus': self.matrix.show_person
+            'focus': self.matrix.show_person,
+            'help': self.show_commands
         }
         return commands
+
+    def show_commands(self) -> None:
+        """Display a list of commands that's currently avaiable
+        """
+        commands = self.load_commands()
+        for key in commands:
+            print(key)

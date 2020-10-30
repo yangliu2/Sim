@@ -11,11 +11,13 @@ def menu() -> None:
         <command> <arg1> <arg2> <arg...>
     """
     display_logo()
+    print("Commands are in the format of: "
+        "<command> <arg1> <arg2> ...")
     portal = Portal()
     
     response = ""
-    while response != 'exit':
-
+    exit_commands = ['exit', 'quit', 'bye']
+    while response.lower().strip() not in exit_commands:
         response = input("> ")
 
         words = response.split(' ')
@@ -25,7 +27,7 @@ def menu() -> None:
         try:
             if command.lower() in portal.commands:
                 portal.commands[command](*args)
-            elif command.lower() == 'exit':
+            elif command.lower().strip() in exit_commands:
                 print(f"Later ya'll!")
             else:
                 print(f'Cannot recognize command!') 
