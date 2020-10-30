@@ -1,14 +1,15 @@
-import os
+from pathlib import Path
 import pickle
+from typing import Dict
 import panzoto.config as CFG
-from panzoto.Matrix import Matrix
-from panzoto.Utils import load_matrix, timer
+from panzoto.matrix import Matrix
+from panzoto.utils import load_matrix, timer
 
 class Portal():
     def __init__(self):
 
         # load Matrix
-        if os.path.isfile(CFG.default_matrix):
+        if Path(CFG.default_matrix).exists():
             self.matrix = load_matrix()
         else:
             self.matrix = Matrix()
@@ -17,15 +18,27 @@ class Portal():
         self.commands = self.load_commands()
 
     @timer
-    def save_matrix(self):
-        if os.path.exists(CFG.default_matrix):
-            with open(CFG.default_matrix, 'wb') as handle:
-                pickle.dump(self.matrix, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        else:
-            os.mkdir('data')
+    def save_matrix(self) -> None:
+        """
+        save the world data in a pickle file
+        """
+        file_path = Path(CFG.default_matrix)
+        if not file_path.parent.exists():
+            Path(file_path.parent).mkdir(parents=True, exist_ok=True)
 
-    def load_commands(self):
+        with open(file_path, 'wb') as handle:
+            pickle.dump(self.matrix, 
+                        handle, 
+                        protocol=pickle.HIGHEST_PROTOCOL)
+
+    def load_commands(self) -> Dict:
+        """Lists of commands 
+
+        Returns:
+            Dict: dict of commands, {command: function to call}
+        """
         commands = {
+            # create_person <first name> <last name>
             'create_person': self.matrix.create_person,
             'create_baby': self.matrix.create_baby,
             'remove_person': self.matrix.delete_person,

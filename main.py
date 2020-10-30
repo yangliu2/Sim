@@ -1,7 +1,15 @@
-from panzoto.Portal import Portal
-from panzoto.Utils import display_logo
+""" Create a environment to interact with the system """
 
-def menu(): 
+from panzoto.portal import Portal
+from panzoto.utils import display_logo
+
+
+def menu() -> None: 
+    """
+    This will be the prompt for interacting with the environment
+    command will be in the format of:
+        <command> <arg1> <arg2> <arg...>
+    """
     display_logo()
     portal = Portal()
     

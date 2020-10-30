@@ -1,4 +1,4 @@
-from panzoto.Thing import Thing
+from panzoto.thing import Thing
 
 class Food(Thing):
 

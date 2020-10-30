@@ -1,7 +1,7 @@
-from panzoto.Person import Person
-from panzoto.Baby import Baby
-from panzoto.Food import Food
-from panzoto.Utils import pline
+from panzoto.person import Person
+from panzoto.baby import Baby
+from panzoto.food import Food
+from panzoto.utils import pline
 
 class Matrix():
 
@@ -9,7 +9,15 @@ class Matrix():
         self.people_dict = {}
         self.thing_dict = {}
 
-    def create_person(self, first_name, last_name):
+    def create_person(self, 
+                      first_name: str, 
+                      last_name: str) -> None:
+        """create a person using first and last name
+
+        Args:
+            first_name (str): first name    
+            last_name (str): last name
+        """
         name = f'{first_name.capitalize()}_{last_name.capitalize()}'
         if name in self.people_dict:
             print('Person already exist!')

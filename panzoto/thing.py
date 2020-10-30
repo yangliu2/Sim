@@ -1,4 +1,4 @@
-from panzoto.Entity import Entity
+from panzoto.entity import Entity
 
 class Thing(Entity):
 
