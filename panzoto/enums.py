@@ -23,3 +23,18 @@ class Logging(AutoName):
     WARNING = auto()
     DEBUG = auto()
     ERROR = auto()
+
+class People(AutoName):
+    FIRST_NAME = "First name"
+    LAST_NAME = "Last name"
+    ID = "ID"
+    GENDER = "Gender"
+    HEALTH = "Health"
+    ENERGY = "Energy"
+    POSESSIONS = "Posessions"
+
+class FoodStatus(AutoName):
+    FOOD_VALUE = "Food value"
+    NAME = "Name"
+    OWNER = "Owner"
+    ID = "ID"

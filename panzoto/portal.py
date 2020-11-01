@@ -5,6 +5,7 @@ import panzoto.config as CFG
 from panzoto.matrix import Matrix
 from panzoto.utils import load_matrix, timer
 
+
 class Portal():
     def __init__(self):
 
@@ -19,16 +20,15 @@ class Portal():
 
     @timer
     def save_matrix(self) -> None:
-        """
-        save the world data in a pickle file
+        """Save the world data in a pickle file
         """
         file_path = Path(CFG.default_matrix)
         if not file_path.parent.exists():
             Path(file_path.parent).mkdir(parents=True, exist_ok=True)
 
         with open(file_path, 'wb') as handle:
-            pickle.dump(self.matrix, 
-                        handle, 
+            pickle.dump(self.matrix,
+                        handle,
                         protocol=pickle.HIGHEST_PROTOCOL)
 
     def load_commands(self) -> Dict:
@@ -46,9 +46,9 @@ class Portal():
             'create_food': self.matrix.create_food,
             'remove_item': self.matrix.delete_thing,
             'assign': self.matrix.assign_item,
-            'list_item': self.matrix.list_thing,
+            'list_items': self.matrix.list_thing,
             'run_turns': self.matrix.run_n_turn,
-            'focus': self.matrix.show_person,
+            'focus': self.matrix.focus,
             'help': self.show_commands
         }
         return commands

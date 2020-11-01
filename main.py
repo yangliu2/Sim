@@ -35,8 +35,8 @@ def menu() -> None:
             print(f'Command format was wrong!')
             print(e)
 
-    # save matrix
-    portal.save_matrix()
+        # save matrix
+        portal.save_matrix()
 
 def main():
     menu()

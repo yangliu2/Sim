@@ -5,7 +5,6 @@ from typing import Tuple
 import random
 from panzoto.utils import load_matrix, timer, log
 from panzoto.enums import Gender, Logging
-from panzoto.portal import Portal
 
 class Baby(Person):
     def __init__(self):
@@ -44,6 +43,4 @@ class Baby(Person):
             log(text=f"Was not able to find a mom and a dad!",
                 level=Logging.INFO.value)
 
-        portal = Portal()
-        portal.save_matrix()
         

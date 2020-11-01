@@ -1,7 +1,7 @@
 from panzoto.entity import Entity
 import random
 import panzoto.config as CFG
-from panzoto.enums import Gender
+from panzoto.enums import Gender, People
 
 class Person(Entity):
 
@@ -20,15 +20,8 @@ class Person(Entity):
         self.energy = 10
         self.alive = True
         self.possession = []
-        self.status = (
-            f"First name: {self.first_name}, "
-            f"Last Name: {self.last_name}, "
-            f"ID: {self.uid}, "
-            f"Gender: {self.gender}, "
-            f"Health: {self.health}, "
-            f"Energy: {self.energy}, "
-            f"Possessions: {self.possession}"
-        )
+        self.status = None
+        self.check_status()
 
     def eat_food(self, food):
 
@@ -84,18 +77,19 @@ class Person(Entity):
             self.alive = False
         
         # updating status
-        poss = "None"
+        poss = []
         if self.possession:
             possession = [x.name for x in self.possession]
             poss = " ".join(possession)
 
         self.status = (
-            f"First name: {self.first_name}, "
-            f"Last Name: {self.last_name}, "
-            f"Gender: {self.gender}, "
-            f"Health: {self.health}, "
-            f"Energy: {self.energy}, "
-            f"Possessions: {poss}"
+            f"{People.FIRST_NAME.value}: {self.first_name}, "
+            f"{People.LAST_NAME.value}: {self.last_name}, "
+            f"{People.ID.value}: {self.uid}, "
+            f"{People.GENDER.value}: {self.gender}, "
+            f"{People.HEALTH.value}: {self.health}, "
+            f"{People.ENERGY.value}: {self.energy}, "
+            f"{People.POSESSIONS.value}: {poss}"
         )
 
 def main():
