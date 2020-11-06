@@ -46,7 +46,7 @@ class Portal():
             'create_food': self.matrix.create_food,
             'remove_item': self.matrix.delete_thing,
             'assign': self.matrix.assign_item,
-            'list_items': self.matrix.list_thing,
+            'list_items': self.matrix.list_things,
             'run_turns': self.matrix.run_n_turn,
             'focus': self.matrix.focus,
             'help': self.show_commands

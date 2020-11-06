@@ -277,15 +277,14 @@ class Matrix():
             return output
 
         if uid in self.thing_dict:
-            self.remove_item_possession(thing_object=self.thing_dict[uid],
-                                        uid=uid)
+            self.remove_item_possession(uid=uid)
         else:
             output += 'That thing does not exist!'
 
         return output
 
     @log_output
-    def list_thing(self) -> str:
+    def list_things(self) -> str:
         """List all the items in matrix
 
         Returns:
@@ -313,7 +312,8 @@ class Matrix():
         output = ""
         output += f'Iter: {num} turns.'
 
-        for _ in range(int(num)):
+        for i in range(int(num)):
+            print(i)
             self.run_one_turn()
 
         return output
@@ -328,11 +328,10 @@ class Matrix():
         output = ""
         for key in list(self.people_dict):
             person_object = self.people_dict[key]
-
             person_object.run_one_turn()
 
             if not person_object.alive:
-                self.delete_person(uid=person_object.uid)
+                self.delete_person(uid=person_object.uid.hex)
                 output += f'{person_object.name} died.'
         return output
 
@@ -344,15 +343,19 @@ class Matrix():
             str: output string
         """
         output = ""
+        if not list(self.thing_dict):
+            return output
+
         for key in list(self.thing_dict):
             item_object = self.thing_dict[key]
 
             if item_object.value <= 0:
-                del self.thing_dict[key]
+                # del self.thing_dict[key]
 
-                owner = item_object.owner
-                owner.possession.remove(item_object)
-                owner.check_status()
+                # owner = item_object.owner
+                # owner.possession.remove(item_object)
+                # owner.check_status()
+                self.delete_thing(key.hex)
         return output
 
     def run_one_turn(self) -> None:

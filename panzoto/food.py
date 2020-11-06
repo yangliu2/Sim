@@ -24,5 +24,5 @@ class Food(Thing):
             f"{FoodStatus.ID.value}: {self.uid}, "
             f"{FoodStatus.NAME.value}: {self.name}, "
             f"{FoodStatus.OWNER.value}: {self.owner}, "
-            f"{FoodStatus.FOOD_VALUE.value}: {self.food_value} "
+            f"{FoodStatus.FOOD_VALUE.value}: {self.food_value}"
         )
