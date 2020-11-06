@@ -8,9 +8,9 @@ Run `python main.py` to start the interaction in prompt
 `create_person <first name> <last name>`  
 Create a person based on first and last name. Stats are randomly generated
 
-**create_baby**  
-`create_baby`  
-Create a baby. It will randomly search for a female and a male in the current population. Stats are randomly generated with full health just like a new person. 
+**create_child**  
+`create_child`  
+Create a child. It will randomly search for a female and a male in the current population. Stats are randomly generated with full health just like a new person. 
 
 **remove_person**  
 `remove_person <uid>`  
@@ -51,5 +51,5 @@ Focus on a specific item for stats.
 Use this to generate a list of commands in a dictionary. 
 
 **exit**  
-`exit`, `quit`, `bye`
+`exit`, `quit`, `bye`  
 This is a current list of commands that will quit the program

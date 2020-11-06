@@ -1,12 +1,13 @@
 """ Matrix object to create the world """
 
+import random
 from uuid import UUID
+from typing import Tuple
 from panzoto.person import Person
-from panzoto.baby import Baby
+from panzoto.child import Child
 from panzoto.food import Food
-from panzoto.thing import Thing
 from panzoto.utils import log_output, log
-from panzoto.enums import Logging
+from panzoto.enums import Logging, Gender
 
 
 class Matrix():
@@ -80,16 +81,46 @@ class Matrix():
 
         return output
 
+    def choose_parents(self) -> Tuple[Person, Person]:
+        """Choose random mom and dad.
+
+        Returns:
+            Tuple[Person, Person]: Two person objects: mom and dad
+        """
+
+        male_list = []
+        female_list = []
+        
+        # get a list of female and male UUIDs
+        for key in self.people_dict:
+            if self.people_dict[key].gender == Gender.FEMALE.value:
+                female_list.append(key)
+            elif self.people_dict[key].gender == Gender.MALE.value:
+                male_list.append(key)
+            else:
+                log(text=f'Some gender are undefined',
+                    level=Logging.ERROR.value)
+
+        # choose a random set of parents if there is at least 1 from each
+        if male_list and female_list:
+            mom = random.choice(female_list)
+            dad = random.choice(male_list)
+            return self.people_dict[mom], self.people_dict[dad]
+        else:
+            log(text=f"Was not able to find a mom and a dad!",
+                level=Logging.INFO.value)
+
     @log_output
-    def create_baby(self) -> str:
-        """Create a baby based on Baby class settings
+    def create_child(self) -> str:
+        """Create a child based on Child class settings
 
         Returns:
             str: output string
         """
         output = ""
-        baby = Baby()
-        self.people_dict[baby.uid] = baby
+        mom, dad = self.choose_parents()
+        child = Child(mom=mom, dad=dad)
+        self.people_dict[child.uid] = child
 
         return output
 

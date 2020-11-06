@@ -6,15 +6,17 @@ import random
 from panzoto.utils import load_matrix, timer, log
 from panzoto.enums import Gender, Logging
 
-class Baby(Person):
-    def __init__(self):
-        mom, dad = self._born()
+class Child(Person):
+    def __init__(self,
+                 mom: Person,
+                 dad: Person):
         super().__init__(mom.first_name, dad.last_name)
         log(text=f"A baby named {mom.first_name} {dad.last_name} was born.",
             level=Logging.INFO.value)
 
     @timer
     def _born(self) -> Tuple[Person, Person]:
+        # TODO: consider delete if not using anymore
         """Simulate the born process. Choose random mom and dad.
 
         Returns:
@@ -33,7 +35,6 @@ class Baby(Person):
             else:
                 log(text=f'Some gender are undefined',
                     level=Logging.ERROR.value)
-
 
         if male_list and female_list:
             mom = random.choice(female_list)
