@@ -3,7 +3,7 @@ import pickle
 from typing import Dict
 import panzoto.config as CFG
 from panzoto.matrix import Matrix
-from panzoto.utils import load_matrix, timer
+from panzoto.utils import load_matrix, log_output, timer
 
 
 class Portal():
@@ -53,9 +53,16 @@ class Portal():
         }
         return commands
 
-    def show_commands(self) -> None:
-        """Display a list of commands that's currently avaiable
+    @log_output
+    def show_commands(self) -> str:
+        """Display a list of commands
+
+        Returns:
+            str: output string
         """
+        output = ""
         commands = self.load_commands()
         for key in commands:
-            print(key)
+            output += key + "\n"
+
+        return output

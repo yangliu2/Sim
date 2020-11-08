@@ -1,10 +1,13 @@
 from panzoto.thing import Thing
-from panzoto.enums import FoodStatus
+from panzoto.enums import FoodStatus, ThingStatus
+
 
 class Food(Thing):
 
     def __init__(self, name, value):
-        super().__init__(name.capitalize(), 0, 'FOOD')
+        super().__init__(name=name.capitalize(), 
+                         value=0, 
+                         category=ThingStatus.FOOD.value)
         self.food_value = value
         self.food_worth = True
         self.status = None
@@ -17,6 +20,8 @@ class Food(Thing):
         return self.status
 
     def check_status(self):
+        """Check and update the status of the food item
+        """
         if self.food_value <= 0:
             self.food_worth = False
         

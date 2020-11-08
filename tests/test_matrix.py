@@ -1,6 +1,6 @@
 import unittest
-from unittest.mock import Mock
 from panzoto.matrix import Matrix
+from panzoto.enums import Gender
 
 
 class TestMatrix(unittest.TestCase):
@@ -221,12 +221,12 @@ class TestMatrix(unittest.TestCase):
         actual = len(before_deletion) == len(after_deletion)
         expected = False
         self.assertEqual(
-            actual, expected, 
+            actual, expected,
             msg="Thing dict did not change in size after item deletion",
         )
 
     def test_check_people_status(self):
-        # change the health of a person below 0 to see if it people status 
+        # change the health of a person below 0 to see if it people status
         # was checked
         count_before = len([*self.matrix.people_dict])
         person_uid = [*self.matrix.people_dict][0]
@@ -260,12 +260,12 @@ class TestMatrix(unittest.TestCase):
         )
 
     def test_check_thing_status(self):
-        # change the health of a person below 0 to see if it people status 
+        # change the health of a person below 0 to see if it people status
         # was checked
         count_before = len([*self.matrix.thing_dict])
         thing_uid = [*self.matrix.thing_dict][0]
 
-        self.matrix.thing_dict[thing_uid].health = -1
+        self.matrix.thing_dict[thing_uid].food_value = 0
         self.matrix.check_things()
 
         count_after = len([*self.matrix.thing_dict])
@@ -275,6 +275,26 @@ class TestMatrix(unittest.TestCase):
         self.assertEqual(
             actual, expected,
             msg="1st thing should be deleted if lost food value.",
+        )
+
+    def test_choose_parents(self):
+        while True:
+            self.matrix.create_person(self.first_name, self.last_name)
+            people_dict = self.matrix.people_dict
+            females = [people_dict[x] for x in people_dict
+                       if people_dict[x].gender == Gender.FEMALE.value]
+            males = [people_dict[x] for x in people_dict
+                     if people_dict[x].gender == Gender.MALE.value]
+            if len(females) > 0 and len(males) > 0:
+                break
+
+        mom, dad = self.matrix.choose_parents()
+        actual = (mom.gender == Gender.FEMALE.value) and \
+            (dad.gender == Gender.MALE.value)
+        expected = True
+        self.assertEqual(
+            actual, expected,
+            msg="Make sure the gender of mom and dad are correct. ",
         )
 
 

@@ -380,12 +380,7 @@ class Matrix():
         for key in list(self.thing_dict):
             item_object = self.thing_dict[key]
 
-            if item_object.value <= 0:
-                # del self.thing_dict[key]
-
-                # owner = item_object.owner
-                # owner.possession.remove(item_object)
-                # owner.check_status()
+            if item_object.food_value <= 0:
                 self.delete_thing(key.hex)
         return output
 

@@ -1,11 +1,10 @@
 import unittest
-from unittest.mock import Mock
 from panzoto.matrix import Matrix
 from panzoto.child import Child
 from panzoto.enums import Gender
 
 
-class TestMatrix(unittest.TestCase):
+class TestChild(unittest.TestCase):
     def setUp(self):
         self._matrix = Matrix()
         self.first_name = "Yang"

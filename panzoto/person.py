@@ -1,7 +1,11 @@
 from panzoto.entity import Entity
 import random
+from typing import List
 import panzoto.config as CFG
-from panzoto.enums import Gender, People
+from panzoto.enums import Gender, PersonStatus, ThingStatus
+from panzoto.food import Food
+from panzoto.utils import log_output
+
 
 class Person(Entity):
 
@@ -23,38 +27,67 @@ class Person(Entity):
         self.status = None
         self.check_status()
 
-    def eat_food(self, food):
+    @log_output
+    def eat_food(self,
+                 food: Food) -> str:
+        """Simulate eating behavior with person and food
+
+        Args:
+            food (Food): Food object
+
+        Returns:
+            str: output string
+        """
+
+        output = ""
 
         need = 10 - self.energy
-        if food.value < need:
-            self.energy += food.value
-            food.value = 0
-            print(f'{self.name} ate some {food.name}. But they are still hungrey.')
+        if food.food_value < need:
+            self.energy += food.food_value
+            food.food_value = 0
+            output += f"{self.name} ate some {food.name}. But they are still " \
+                       "hungrey."
         else:
             self.energy += need
-            food.value -= need
-            print(f'{self.name} ate some {food.name}. And they are no longer hungrey.')
+            food.food_value -= need
+            output += f"{self.name} ate some {food.name}. And they are no " \
+                       "longer hungrey."
 
-    def get_food_list(self):
+        return output
+
+    @log_output
+    def get_food_list(self) -> List[Food]:
+        """List all of food a person have
+
+        Returns:
+            List[Food]: All the times in a person's possession
+        """
+
         food_list = []
         for item in self.possession:
-            if item.type == 'FOOD':
+            if item.type == ThingStatus.FOOD.value:
                 food_list.append(item)
         return food_list
 
-    def eat(self):
+    def eat(self) -> None:
+        """Simulate eating if there is food in possession
+        """
         food_list = self.get_food_list()
         if food_list:
             food = random.choice(food_list)
             self.eat_food(food)
-    
+
     def __str__(self):
         return self.status
 
     def __repr__(self):
         return self.status
 
-    def calc_expense(self):
+    def calc_expense(self) -> None:
+        """Adjust health according energy. 
+        More than 0 energy -> increase health to 10
+        Less thatn 0 energy -> health decrease by 1
+        """
         if self.energy <= 0:
             self.health -= 1
         elif (self.energy > 0) and (self.health < 10):
@@ -63,19 +96,25 @@ class Person(Entity):
         else:
             self.energy -= 1
 
-    def calc_need(self):
+    def calc_need(self) -> None:
+        """Check if the person is hungery
+        """
         if self.energy < CFG.hunger_check:
             self.eat()
 
-    def run_one_turn(self):
+    def run_one_turn(self) -> None:
+        """Chekc all the things for when a person runs one iteration
+        """
         self.calc_need()
         self.calc_expense()
         self.check_status()
 
-    def check_status(self):
+    def check_status(self) -> None:
+        """Check and update the status of a person
+        """
         if self.health <= 0:
             self.alive = False
-        
+
         # updating status
         poss = []
         if self.possession:
@@ -83,17 +122,19 @@ class Person(Entity):
             poss = " ".join(possession)
 
         self.status = (
-            f"{People.FIRST_NAME.value}: {self.first_name}, "
-            f"{People.LAST_NAME.value}: {self.last_name}, "
-            f"{People.ID.value}: {self.uid}, "
-            f"{People.GENDER.value}: {self.gender}, "
-            f"{People.HEALTH.value}: {self.health}, "
-            f"{People.ENERGY.value}: {self.energy}, "
-            f"{People.POSESSIONS.value}: {poss}"
+            f"{PersonStatus.FIRST_NAME.value}: {self.first_name}, "
+            f"{PersonStatus.LAST_NAME.value}: {self.last_name}, "
+            f"{PersonStatus.ID.value}: {self.uid}, "
+            f"{PersonStatus.GENDER.value}: {self.gender}, "
+            f"{PersonStatus.HEALTH.value}: {self.health}, "
+            f"{PersonStatus.ENERGY.value}: {self.energy}, "
+            f"{PersonStatus.POSESSIONS.value}: {poss}"
         )
+
 
 def main():
     pass
+
 
 if __name__ == "__main__":
     main()

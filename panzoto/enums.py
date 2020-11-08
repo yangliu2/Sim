@@ -24,7 +24,7 @@ class Logging(AutoName):
     DEBUG = auto()
     ERROR = auto()
 
-class People(AutoName):
+class PersonStatus(AutoName):
     FIRST_NAME = "First name"
     LAST_NAME = "Last name"
     ID = "ID"
@@ -32,6 +32,9 @@ class People(AutoName):
     HEALTH = "Health"
     ENERGY = "Energy"
     POSESSIONS = "Posessions"
+
+class ThingStatus(AutoName):
+    FOOD = auto()
 
 class FoodStatus(AutoName):
     FOOD_VALUE = "Food value"
