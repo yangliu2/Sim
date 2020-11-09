@@ -1,6 +1,6 @@
 from pathlib import Path
 import pickle
-from typing import Dict
+from typing import Callable, Dict
 import panzoto.config as CFG
 from panzoto.matrix import Matrix
 from panzoto.utils import load_matrix, log_output, timer
@@ -19,10 +19,15 @@ class Portal():
         self.commands = self.load_commands()
 
     @timer
-    def save_matrix(self) -> None:
+    def save_matrix(self,
+                    save_path: str = CFG.default_matrix) -> None:
         """Save the world data in a pickle file
+
+        Args:
+            save_path (str, optional): save matrix file path. 
+            Defaults to CFG.default_matrix.
         """
-        file_path = Path(CFG.default_matrix)
+        file_path = Path(save_path)
         if not file_path.parent.exists():
             Path(file_path.parent).mkdir(parents=True, exist_ok=True)
 
@@ -31,7 +36,7 @@ class Portal():
                         handle,
                         protocol=pickle.HIGHEST_PROTOCOL)
 
-    def load_commands(self) -> Dict:
+    def load_commands(self) -> Dict[str, Callable]:
         """Lists of commands 
 
         Returns:
