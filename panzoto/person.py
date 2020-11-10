@@ -128,7 +128,7 @@ class Person(Entity):
             f"{PersonStatus.GENDER.value}: {self.gender}, "
             f"{PersonStatus.HEALTH.value}: {self.health}, "
             f"{PersonStatus.ENERGY.value}: {self.energy}, "
-            f"{PersonStatus.POSESSIONS.value}: {poss}"
+            f"{PersonStatus.POSESSION.value}: {poss}"
         )
 
 

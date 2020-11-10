@@ -31,7 +31,7 @@ class PersonStatus(AutoName):
     GENDER = "Gender"
     HEALTH = "Health"
     ENERGY = "Energy"
-    POSESSIONS = "Posessions"
+    POSESSION = "Posession"
 
 class ThingStatus(AutoName):
     FOOD = auto()

@@ -215,6 +215,9 @@ class TestMatrix(unittest.TestCase):
         # compare the length of the thing dict before and after deletion of
         # item because uid of the item changes
         thing_uid = [*self.matrix.thing_dict][0]
+        people_uid = [*self.matrix.people_dict][0]
+        self.matrix.assign_item(thing_uid=thing_uid.hex,
+                                person_uid=people_uid.hex)
         before_deletion = [*self.matrix.thing_dict]
         self.matrix.delete_thing(thing_uid.hex)
         after_deletion = [*self.matrix.thing_dict]
@@ -223,6 +226,41 @@ class TestMatrix(unittest.TestCase):
         self.assertEqual(
             actual, expected,
             msg="Thing dict did not change in size after item deletion",
+        )
+
+    def test_delete_thing_check_possession(self):
+        # also need to check that item is removed from the owner's possession
+
+        thing_uid = [*self.matrix.thing_dict][0]
+        person_uid = [*self.matrix.people_dict][0]
+        self.matrix.assign_item(thing_uid=thing_uid.hex,
+                                person_uid=person_uid.hex)
+        before_deletion = list(self.matrix.people_dict[person_uid].possession)
+        self.matrix.delete_thing(thing_uid.hex)
+        after_deletion = list(self.matrix.people_dict[person_uid].possession)
+        actual = len(before_deletion) == len(after_deletion)
+        expected = False
+        self.assertEqual(
+            actual, expected,
+            msg="The item need to be removed from the person's possession.",
+        )
+
+    def test_delete_thing_check_person_status(self):
+        # also need to check that status is updated for the owner's possession
+
+        thing_uid = [*self.matrix.thing_dict][0]
+        person_uid = [*self.matrix.people_dict][0]
+        self.matrix.assign_item(thing_uid=thing_uid.hex,
+                                person_uid=person_uid.hex)
+        before_status = self.matrix.people_dict[person_uid].status
+        self.matrix.delete_thing(thing_uid.hex)
+        after_status = self.matrix.people_dict[person_uid].status
+        actual = after_status
+        expected = before_status.rsplit(":",1)[0] + ": []"
+
+        self.assertEqual(
+            actual, expected,
+            msg="The status needs to be removed from the person's possession.",
         )
 
     def test_check_people_status(self):

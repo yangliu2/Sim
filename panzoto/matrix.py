@@ -184,7 +184,7 @@ class Matrix():
         thing_uid = UUID(thing_uid)
         person_uid = UUID(person_uid)
 
-        # only assing item if both item and person exisit
+        # only assing item if both item and person exit
         if (person_uid in self.people_dict) and (thing_uid in self.thing_dict):
             person_object = self.people_dict[person_uid]
             thing_object = self.thing_dict[thing_uid]
@@ -281,9 +281,11 @@ class Matrix():
             owner_uid = thing_object.owner
             person = self.people_dict[owner_uid]
             person.possession.remove(thing_object)
+            person.check_status()
         else:
             output += f"{thing_object.name} was not owned by anybody!"
         del self.thing_dict[uid]
+
 
         return output
 

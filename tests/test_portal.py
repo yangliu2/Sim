@@ -36,7 +36,7 @@ class TestPortal(unittest.TestCase):
         self.assertEqual(
             actual,
             expected,
-            msg="Created file path need to exist.",
+            msg="Created matrix file path need to exist.",
         )
 
     def test_load_commands(self):
