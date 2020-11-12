@@ -1,6 +1,6 @@
 import unittest
 from panzoto.matrix import Matrix
-from panzoto.enums import Gender
+from panzoto.enums import Gender, Stats
 
 
 class TestMatrix(unittest.TestCase):
@@ -333,6 +333,29 @@ class TestMatrix(unittest.TestCase):
         self.assertEqual(
             actual, expected,
             msg="Make sure the gender of mom and dad are correct. ",
+        )
+
+    def test_get_people_energy_median(self):
+        actual = self.matrix.get_people_energy_median()
+        expected = 10
+        self.assertEqual(
+            actual, expected,
+            msg="Median of the health is 10.",
+        )
+
+    def test_get_stats(self):
+        self.matrix.create_person("Fangfang", "Lai")
+        self.matrix.update_stats()
+        actual = self.matrix.stats
+        expected = {
+            Stats.PEOPLE_COUNT.value: 2,
+            Stats.PEOPLE_ENERGY_MEDIAN.value: 10,
+            Stats.PEOPLE_HEALTH_MEDIAN.value: 10,
+            Stats.ITEM_COUNT.value: 1
+        }
+        self.assertDictEqual(
+            actual, expected,
+            msg="Stats need to generate the correct dict.",
         )
 
 

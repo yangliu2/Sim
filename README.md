@@ -46,6 +46,10 @@ Focus on a specific person for stats.
 `focus <item name>`  
 Focus on a specific item for stats. 
 
+**display_stats**  
+`display_stats`  
+Show population level stats.  
+
 **help**  
 `help`  
 Use this to generate a list of commands in a dictionary. 

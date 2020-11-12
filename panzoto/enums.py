@@ -41,3 +41,9 @@ class FoodStatus(AutoName):
     NAME = "Name"
     OWNER = "Owner"
     ID = "ID"
+
+class Stats(AutoName):
+    PEOPLE_COUNT = auto()
+    PEOPLE_ENERGY_MEDIAN = auto()
+    PEOPLE_HEALTH_MEDIAN = auto()
+    ITEM_COUNT = auto()

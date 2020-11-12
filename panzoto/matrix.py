@@ -1,13 +1,14 @@
 """ Matrix object to create the world """
 
 import random
+import statistics
 from uuid import UUID
 from typing import Tuple
 from panzoto.person import Person
 from panzoto.child import Child
 from panzoto.food import Food
 from panzoto.utils import log_output, log
-from panzoto.enums import Logging, Gender
+from panzoto.enums import Logging, Gender, Stats
 
 
 class Matrix():
@@ -15,6 +16,7 @@ class Matrix():
     def __init__(self):
         self.people_dict = {}
         self.thing_dict = {}
+        self.stats = {}
 
     @staticmethod
     def get_full_name(first_name: str,
@@ -390,3 +392,51 @@ class Matrix():
         """Calculate all the changes in one turn"""
         self.check_people()
         self.check_things()
+
+    def get_people_energy_median(self) -> int:
+        """Get the median of people energy
+
+        Returns:
+            int: median of people energy
+        """
+
+        energy_total = [self.people_dict[x].energy for x in self.people_dict]
+        median = statistics.median(energy_total)
+        return median
+
+    def get_people_health_median(self) -> int:
+        """Get the median of people health
+
+        Returns:
+            int: median of people health
+        """
+
+        total = [self.people_dict[x].health for x in self.people_dict]
+        median = statistics.median(total)
+        return median
+
+    def update_stats(self) -> None:
+        """Update the stats in self.Stats Dictionary
+        """
+
+        self.stats[Stats.PEOPLE_COUNT.value] = len(self.people_dict)
+        self.stats[Stats.PEOPLE_ENERGY_MEDIAN.value] = \
+            self.get_people_energy_median()
+        self.stats[Stats.PEOPLE_HEALTH_MEDIAN.value] = \
+            self.get_people_health_median()
+        self.stats[Stats.ITEM_COUNT.value] = len(self.thing_dict)
+
+    @log_output
+    def display_stats(self) -> str:
+        """Generate stats as string
+
+        Returns:
+            str: stats string output
+        """
+
+        output = ""
+        self.update_stats()
+        for x in self.stats:
+            output += f"{x}: {self.stats[x]}\n"
+
+        return output
