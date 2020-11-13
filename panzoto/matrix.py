@@ -415,16 +415,38 @@ class Matrix():
         median = statistics.median(total)
         return median
 
+    def get_female_count(self) -> int:
+        """Count the number of female people
+
+        Returns:
+            int: femal count total
+        """
+        female_count = [x for x in self.people_dict 
+                        if self.people_dict[x].gender == Gender.FEMALE.value]
+        return len(female_count)
+
+    def get_male_count(self) -> int:
+        """Count the number of male people
+
+        Returns:
+            int: male count total
+        """
+        male_count = [x for x in self.people_dict
+                        if self.people_dict[x].gender == Gender.MALE.value]
+        return len(male_count)
+
     def update_stats(self) -> None:
         """Update the stats in self.Stats Dictionary
         """
 
         self.stats[Stats.PEOPLE_COUNT.value] = len(self.people_dict)
         self.stats[Stats.PEOPLE_ENERGY_MEDIAN.value] = \
-            self.get_people_energy_median()
+            float(self.get_people_energy_median())
         self.stats[Stats.PEOPLE_HEALTH_MEDIAN.value] = \
-            self.get_people_health_median()
+            float(self.get_people_health_median())
         self.stats[Stats.ITEM_COUNT.value] = len(self.thing_dict)
+        self.stats[Stats.FEMALE_COUNT.value] = self.get_female_count()
+        self.stats[Stats.MALE_COUNT.value] = self.get_male_count()
 
     @log_output
     def display_stats(self) -> str:

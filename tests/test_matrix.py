@@ -346,13 +346,19 @@ class TestMatrix(unittest.TestCase):
     def test_get_stats(self):
         self.matrix.create_person("Fangfang", "Lai")
         self.matrix.update_stats()
+        female_count = self.matrix.get_female_count()
+        male_count = self.matrix.get_male_count()
         actual = self.matrix.stats
+
         expected = {
             Stats.PEOPLE_COUNT.value: 2,
             Stats.PEOPLE_ENERGY_MEDIAN.value: 10,
             Stats.PEOPLE_HEALTH_MEDIAN.value: 10,
-            Stats.ITEM_COUNT.value: 1
+            Stats.ITEM_COUNT.value: 1,
+            Stats.FEMALE_COUNT.value: female_count,
+            Stats.MALE_COUNT.value: male_count
         }
+        print(actual, expected)
         self.assertDictEqual(
             actual, expected,
             msg="Stats need to generate the correct dict.",

@@ -47,3 +47,5 @@ class Stats(AutoName):
     PEOPLE_ENERGY_MEDIAN = auto()
     PEOPLE_HEALTH_MEDIAN = auto()
     ITEM_COUNT = auto()
+    FEMALE_COUNT = auto()
+    MALE_COUNT = auto()
