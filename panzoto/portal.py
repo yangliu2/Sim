@@ -54,7 +54,8 @@ class Portal():
             'list_items': self.matrix.list_things,
             'run_turns': self.matrix.run_n_turn,
             'focus': self.matrix.focus,
-            'display_stats': self.matrix.display_stats,
+            'show_stats': self.matrix.show_stats,
+            'show_records': self.matrix.show_records,
             'help': self.show_commands
         }
         return commands

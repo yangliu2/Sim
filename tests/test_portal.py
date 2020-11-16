@@ -18,7 +18,8 @@ class TestPortal(unittest.TestCase):
             'list_items',
             'run_turns',
             'focus',
-            'display_stats',
+            'show_stats',
+            'show_records',
             'help'
         ]
 

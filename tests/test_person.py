@@ -1,5 +1,6 @@
 import unittest
 from panzoto.person import Person
+import panzoto.config as CFG
 from panzoto.enums import PersonStatus, ThingStatus
 from panzoto.food import Food
 
@@ -115,4 +116,28 @@ class TestPerson(unittest.TestCase):
             actual,
             expected,
             msg="Person should not be alive if health falls below 0.",
+        )
+
+    def test_check_death_death(self):
+        self.person.age = CFG.longest_life - 1
+        self.person.check_death()
+
+        actual = self.person.alive
+        expected = False
+        self.assertEqual(
+            actual,
+            expected,
+            msg=f"Older people ({self.person.age}) die more. (still can fail)",
+        )
+
+    def test_check_death_no_death(self):
+        self.person.age = 1
+        self.person.check_death()
+
+        actual = self.person.alive
+        expected = True
+        self.assertEqual(
+            actual,
+            expected,
+            msg=f"Younger people ({self.person.age}) die lesss. (still can fail)",
         )

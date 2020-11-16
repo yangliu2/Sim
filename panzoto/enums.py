@@ -44,8 +44,11 @@ class FoodStatus(AutoName):
 
 class Stats(AutoName):
     PEOPLE_COUNT = auto()
+    PEOPLE_AGE_MEDIAN = auto()
     PEOPLE_ENERGY_MEDIAN = auto()
     PEOPLE_HEALTH_MEDIAN = auto()
     ITEM_COUNT = auto()
     FEMALE_COUNT = auto()
     MALE_COUNT = auto()
+    TOTAL_TURNS = auto()
+    RECORDS = auto()

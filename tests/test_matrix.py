@@ -335,15 +335,31 @@ class TestMatrix(unittest.TestCase):
             msg="Make sure the gender of mom and dad are correct. ",
         )
 
+    def test_get_people_age_median(self):
+        actual = self.matrix.get_people_age_median()
+        expected = 0
+        self.assertEqual(
+            actual, expected,
+            msg="Median of the age is 0.",
+        )
+
     def test_get_people_energy_median(self):
         actual = self.matrix.get_people_energy_median()
+        expected = 10
+        self.assertEqual(
+            actual, expected,
+            msg="Median of the energy is 10.",
+        )
+
+    def test_get_people_health_median(self):
+        actual = self.matrix.get_people_health_median()
         expected = 10
         self.assertEqual(
             actual, expected,
             msg="Median of the health is 10.",
         )
 
-    def test_get_stats(self):
+    def test_update_stats(self):
         self.matrix.create_person("Fangfang", "Lai")
         self.matrix.update_stats()
         female_count = self.matrix.get_female_count()
@@ -351,7 +367,9 @@ class TestMatrix(unittest.TestCase):
         actual = self.matrix.stats
 
         expected = {
+            Stats.TOTAL_TURNS.value: 0,
             Stats.PEOPLE_COUNT.value: 2,
+            Stats.PEOPLE_AGE_MEDIAN.value: 0,
             Stats.PEOPLE_ENERGY_MEDIAN.value: 10,
             Stats.PEOPLE_HEALTH_MEDIAN.value: 10,
             Stats.ITEM_COUNT.value: 1,

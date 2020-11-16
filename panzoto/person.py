@@ -89,12 +89,12 @@ class Person(Entity):
         Less thatn 0 energy -> health decrease by 1
         """
         if self.energy <= 0:
-            self.health -= 1
+            self.health -= 1 
         elif (self.energy > 0) and (self.health < 10):
-            self.health += 1
+            self.health += 1 
             self.energy -= 1
         else:
-            self.energy -= 1
+            self.energy -= 1 
 
     def calc_need(self) -> None:
         """Check if the person is hungery
@@ -102,12 +102,29 @@ class Person(Entity):
         if self.energy < CFG.hunger_check:
             self.eat()
 
+    def check_death(self) -> None:
+        """Check if the person will die. Random chance of dying. The older they
+        are the more likely they are going to die.
+        """
+        chance = random.random()
+
+        if (self.age / CFG.longest_life) > chance:
+            self.alive = False
+
+    def check_speed_multiplier(self) -> None:
+        """This will adjust to the speed of the simulation using the "speed"
+        parameter in config file
+        """
+        self.age += CFG.speed * 10
+
     def run_one_turn(self) -> None:
         """Chekc all the things for when a person runs one iteration
         """
         self.calc_need()
         self.calc_expense()
         self.check_status()
+        self.check_death()
+        self.check_speed_multiplier()
 
     def check_status(self) -> None:
         """Check and update the status of a person

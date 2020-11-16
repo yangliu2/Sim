@@ -18,6 +18,9 @@ class Matrix():
         self.thing_dict = {}
         self.stats = {}
 
+        # this is a list of dictionary values
+        self.records = []
+
     @staticmethod
     def get_full_name(first_name: str,
                       last_name: str) -> str:
@@ -76,7 +79,7 @@ class Matrix():
             return output
 
         if uid in self.people_dict:
-            output += f"{self.people_dict[uid].name} have been removed!"
+            # output += f"{self.people_dict[uid].name} have been removed!"
             del self.people_dict[uid]
         else:
             output += 'That person does not exist!'
@@ -348,7 +351,6 @@ class Matrix():
         output += f'Iter: {num} turns.'
 
         for i in range(int(num)):
-            print(i)
             self.run_one_turn()
 
         return output
@@ -390,8 +392,31 @@ class Matrix():
 
     def run_one_turn(self) -> None:
         """Calculate all the changes in one turn"""
+
+        # keep track of total turns
+        self.stats[Stats.TOTAL_TURNS.value] += 1
+
         self.check_people()
         self.check_things()
+        self.update_stats()
+
+        # save stats
+        self.records.append(list(self.stats.values()))
+
+    def get_people_age_median(self) -> int:
+        """Get the median of people age
+
+        Returns:
+            int: median of people age
+        """
+
+        total = [self.people_dict[x].age for x in self.people_dict]
+
+        if not total:
+            return 0
+        else:
+            median = statistics.median(total)
+        return median
 
     def get_people_energy_median(self) -> int:
         """Get the median of people energy
@@ -401,7 +426,11 @@ class Matrix():
         """
 
         energy_total = [self.people_dict[x].energy for x in self.people_dict]
-        median = statistics.median(energy_total)
+        
+        if not energy_total:
+            return 0
+        else:
+            median = statistics.median(energy_total)
         return median
 
     def get_people_health_median(self) -> int:
@@ -412,7 +441,10 @@ class Matrix():
         """
 
         total = [self.people_dict[x].health for x in self.people_dict]
-        median = statistics.median(total)
+        if not total:
+            return 0
+        else:
+            median = statistics.median(total)
         return median
 
     def get_female_count(self) -> int:
@@ -437,9 +469,22 @@ class Matrix():
 
     def update_stats(self) -> None:
         """Update the stats in self.Stats Dictionary
+        1. total turns
+        2. people count
+        3. people energy median
+        4. people health median
+        5. item count
+        6. female count
+        7. male count
         """
 
+        # make sure turn starts at 0
+        if not Stats.TOTAL_TURNS.value in self.stats:
+            self.stats[Stats.TOTAL_TURNS.value] = 0
+
         self.stats[Stats.PEOPLE_COUNT.value] = len(self.people_dict)
+        self.stats[Stats.PEOPLE_AGE_MEDIAN.value] = \
+            float(self.get_people_age_median())
         self.stats[Stats.PEOPLE_ENERGY_MEDIAN.value] = \
             float(self.get_people_energy_median())
         self.stats[Stats.PEOPLE_HEALTH_MEDIAN.value] = \
@@ -448,8 +493,9 @@ class Matrix():
         self.stats[Stats.FEMALE_COUNT.value] = self.get_female_count()
         self.stats[Stats.MALE_COUNT.value] = self.get_male_count()
 
+
     @log_output
-    def display_stats(self) -> str:
+    def show_stats(self) -> str:
         """Generate stats as string
 
         Returns:
@@ -458,7 +504,23 @@ class Matrix():
 
         output = ""
         self.update_stats()
+
         for x in self.stats:
             output += f"{x}: {self.stats[x]}\n"
+
+        return output
+
+    @log_output
+    def show_records(self) -> str:
+        """Display all the records as string
+
+        Returns:
+            str: string output of all the records.
+        """
+        output = ""
+        headers = list(self.stats.keys())
+        output += ",".join(headers) + "\n"
+        for x in self.records:
+            output += f"{x}\n"
 
         return output
