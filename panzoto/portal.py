@@ -56,6 +56,7 @@ class Portal():
             'focus': self.matrix.focus,
             'show_stats': self.matrix.show_stats,
             'show_records': self.matrix.show_records,
+            'graph_stats': self.matrix.graph_stats,
             'help': self.show_commands
         }
         return commands

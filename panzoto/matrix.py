@@ -4,6 +4,11 @@ import random
 import statistics
 from uuid import UUID
 from typing import Tuple
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+import seaborn as sns
+import pandas as pd
+from pathlib import Path
 from panzoto.person import Person
 from panzoto.child import Child
 from panzoto.food import Food
@@ -20,6 +25,8 @@ class Matrix():
 
         # this is a list of dictionary values
         self.records = []
+        # make sure turn starts at 0
+        self.stats[Stats.TOTAL_TURNS.value] = 0
 
     @staticmethod
     def get_full_name(first_name: str,
@@ -478,10 +485,6 @@ class Matrix():
         7. male count
         """
 
-        # make sure turn starts at 0
-        if not Stats.TOTAL_TURNS.value in self.stats:
-            self.stats[Stats.TOTAL_TURNS.value] = 0
-
         self.stats[Stats.PEOPLE_COUNT.value] = len(self.people_dict)
         self.stats[Stats.PEOPLE_AGE_MEDIAN.value] = \
             float(self.get_people_age_median())
@@ -518,9 +521,29 @@ class Matrix():
             str: string output of all the records.
         """
         output = ""
-        headers = list(self.stats.keys())
+        headers = [x.value for x in Stats]
         output += ",".join(headers) + "\n"
         for x in self.records:
             output += f"{x}\n"
 
         return output
+
+    def graph_stats(self) -> None:
+        """Generate graphs for stats over turns
+        """
+        stats = [x.value for x in Stats]
+        data = pd.DataFrame(self.records, columns=stats)
+
+        for stat in stats:
+            # skip turn vs turn graph, not useful
+            if stat == Stats.TOTAL_TURNS.value:
+                continue
+
+            sns_plot = sns.lineplot(data=data, 
+                                    x=Stats.TOTAL_TURNS.value,
+                                    y=stat)
+
+            output_path = Path("data") / Path("graphs") / f"{stat}.png"
+            fig = sns_plot.get_figure()
+            fig.savefig(output_path)
+            plt.clf()

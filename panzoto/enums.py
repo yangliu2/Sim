@@ -43,6 +43,7 @@ class FoodStatus(AutoName):
     ID = "ID"
 
 class Stats(AutoName):
+    TOTAL_TURNS = auto()
     PEOPLE_COUNT = auto()
     PEOPLE_AGE_MEDIAN = auto()
     PEOPLE_ENERGY_MEDIAN = auto()
@@ -50,5 +51,4 @@ class Stats(AutoName):
     ITEM_COUNT = auto()
     FEMALE_COUNT = auto()
     MALE_COUNT = auto()
-    TOTAL_TURNS = auto()
-    RECORDS = auto()
+    

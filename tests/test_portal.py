@@ -20,6 +20,7 @@ class TestPortal(unittest.TestCase):
             'focus',
             'show_stats',
             'show_records',
+            'graph_stats',
             'help'
         ]
 
