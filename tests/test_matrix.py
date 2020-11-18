@@ -1,4 +1,5 @@
 import unittest
+import panzoto.config as CFG
 from panzoto.matrix import Matrix
 from panzoto.enums import Gender, Stats
 
@@ -291,7 +292,10 @@ class TestMatrix(unittest.TestCase):
         output = self.matrix.check_people()
 
         actual = output
-        expected = f"{person_name} died."
+        if CFG.person_messages:
+            expected = f"{person_name} died."
+        else:
+            expected = ""
         self.assertEqual(
             actual, expected,
             msg="Output was wrong when a person died.",

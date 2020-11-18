@@ -5,10 +5,10 @@ import statistics
 from uuid import UUID
 from typing import Tuple
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
 import seaborn as sns
 import pandas as pd
 from pathlib import Path
+from multiprocessing import Process, Value, Pool
 import panzoto.config as CFG
 from panzoto.person import Person
 from panzoto.child import Child
@@ -45,8 +45,8 @@ class Matrix():
 
     @log_output
     def create_person(self,
-                      first_name: str,
-                      last_name: str) -> str:
+                      first_name: str = "anonymous",
+                      last_name: str = "person") -> str:
         """create a person using first and last name
 
         Args:
@@ -76,6 +76,9 @@ class Matrix():
             self.create_person(first_name="anonymous",
                                last_name="person")
         output += f"{total} people were created."
+
+    def multi_create_people(self, total: str):
+        pass
 
     @log_output
     def delete_person(self,

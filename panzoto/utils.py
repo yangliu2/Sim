@@ -1,10 +1,11 @@
 from contextlib import contextmanager
-from pickle import LONG
 import panzoto.config as CFG
 import pickle
 import functools
 import time
 import logging
+import pandas as pd
+from pathlib import Path
 from panzoto.enums import Logging, Names
 from typing import Callable
 
@@ -88,3 +89,27 @@ def log(text: str,
 
 	if text and CFG.on_screen_print:
 		print(text)
+
+def rank_profile(log_path="log/speed.log") -> None:
+	"""Sort the cProfile log file to find which process is taking the most
+	amount of time.
+
+	Args:
+		log_path (str, optional): source log file path. 
+		Defaults to "log/speed.log".
+	"""
+
+	# skip the first two lines because it's not the correct header
+	log_temp = Path(log_path).parent / "temp.log"
+	with open(log_path) as input_file, open(log_temp) as output_file:
+		next(input_file)
+		next(input_file)
+		for line in input_file:
+			output_file.write(line)
+
+	# use file with correct header to sort columns
+	data = pd.read_csv(log_temp,
+					   delim_whitespace=True, 
+					   error_bad_lines=False)
+	sorted = data.sort_values(by=['percall'], ascending=False)
+	sorted.to_csv("log/sorted_speed.log", index=False)

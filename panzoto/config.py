@@ -13,4 +13,4 @@ longest_life = 120
 
 # speed
 speed = 1
-birth_rate = 0.249 # best for balance population equalibrium
+birth_rate = 0.248 # best for balance population equalibrium
