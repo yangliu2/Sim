@@ -9,6 +9,7 @@ class TestPortal(unittest.TestCase):
         self.save_path = "tests/matrix.save"
         self.list_of_commands = [
             'create_person', 
+            'create_people',
             'create_child',
             'remove_person',
             'list_people',

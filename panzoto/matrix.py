@@ -9,6 +9,7 @@ from matplotlib.ticker import FuncFormatter
 import seaborn as sns
 import pandas as pd
 from pathlib import Path
+import panzoto.config as CFG
 from panzoto.person import Person
 from panzoto.child import Child
 from panzoto.food import Food
@@ -59,10 +60,22 @@ class Matrix():
         output = ""
 
         person = Person(first_name, last_name)
-        output += f'{person.name} created.'
+
+        # loggin pref
+        if CFG.person_messages:
+            output += f'{person.name} created.'
         self.people_dict[person.uid] = person
 
         return output
+
+    @log_output
+    def create_people(self, 
+                      total: str):
+        output = ""
+        for _ in range(int(total)):
+            self.create_person(first_name="anonymous",
+                               last_name="person")
+        output += f"{total} people were created."
 
     @log_output
     def delete_person(self,
@@ -347,22 +360,6 @@ class Matrix():
         return output
 
     @log_output
-    def run_n_turn(self,
-                   num: int) -> None:
-        """run n number of turns for a world simulation
-
-        Args:
-            num (int): number of iterations
-        """
-        output = ""
-        output += f'Iter: {num} turns.'
-
-        for i in range(int(num)):
-            self.run_one_turn()
-
-        return output
-
-    @log_output
     def check_people(self) -> str:
         """Update all the person object in maxtrix
 
@@ -376,7 +373,10 @@ class Matrix():
 
             if not person_object.alive:
                 self.delete_person(uid=person_object.uid.hex)
-                output += f'{person_object.name} died.'
+                
+                # change log pref
+                if CFG.person_messages:
+                    output += f'{person_object.name} died.\n'
         return output
 
     @log_output
@@ -397,6 +397,14 @@ class Matrix():
                 self.delete_thing(key.hex)
         return output
 
+    def check_env(self):
+        """This is all the setting of what's happening to the world
+        1. birth rate 
+        """
+        birth_rate = CFG.birth_rate
+        birth_number = self.stats[Stats.PEOPLE_COUNT.value] * birth_rate
+        self.create_people(birth_number)
+
     def run_one_turn(self) -> None:
         """Calculate all the changes in one turn"""
 
@@ -406,9 +414,27 @@ class Matrix():
         self.check_people()
         self.check_things()
         self.update_stats()
+        self.check_env()
 
         # save stats
         self.records.append(list(self.stats.values()))
+
+    @log_output
+    def run_n_turn(self,
+                   num: int) -> None:
+        """run n number of turns for a world simulation
+
+        Args:
+            num (int): number of iterations
+        """
+        output = ""
+        output += f'Iter: {num} turns.'
+
+        for i in range(int(num)):
+            print(f"Turn: {i}")
+            self.run_one_turn()
+
+        return output
 
     def get_people_age_median(self) -> int:
         """Get the median of people age

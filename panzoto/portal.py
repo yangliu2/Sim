@@ -45,6 +45,7 @@ class Portal():
         commands = {
             # create_person <first name> <last name>
             'create_person': self.matrix.create_person,
+            'create_people': self.matrix.create_people,
             'create_child': self.matrix.create_child,
             'remove_person': self.matrix.delete_person,
             'list_people': self.matrix.list_people,
