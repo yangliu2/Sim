@@ -27,7 +27,6 @@ class Person(Entity):
         self.status = None
         self.check_status()
 
-    @log_output
     def eat_food(self,
                  food: Food) -> str:
         """Simulate eating behavior with person and food
@@ -55,7 +54,6 @@ class Person(Entity):
 
         return output
 
-    @log_output
     def get_food_list(self) -> List[Food]:
         """List all of food a person have
 

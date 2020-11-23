@@ -8,12 +8,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 from pathlib import Path
-from multiprocessing import Process, Value, Pool
+import psutil
+from multiprocessing import Pool
+import multiprocessing as mp
 import panzoto.config as CFG
 from panzoto.person import Person
 from panzoto.child import Child
 from panzoto.food import Food
-from panzoto.utils import log_output, log
+from panzoto.utils import log_output, log, timer
 from panzoto.enums import Logging, Gender, Stats
 
 
@@ -43,7 +45,6 @@ class Matrix():
         """
         return f'{first_name.capitalize()}_{last_name.capitalize()}'
 
-    @log_output
     def create_person(self,
                       first_name: str = "anonymous",
                       last_name: str = "person") -> str:
@@ -68,7 +69,6 @@ class Matrix():
 
         return output
 
-    @log_output
     def create_people(self, 
                       total: str):
         output = ""
@@ -77,10 +77,6 @@ class Matrix():
                                last_name="person")
         output += f"{total} people were created."
 
-    def multi_create_people(self, total: str):
-        pass
-
-    @log_output
     def delete_person(self,
                       uid: str) -> str:
         """Remove a person from the matrix using uid string
@@ -138,7 +134,6 @@ class Matrix():
             log(text=f"Was not able to find a mom and a dad!",
                 level=Logging.INFO.value)
 
-    @log_output
     def create_child(self) -> str:
         """Create a child based on Child class settings
 
@@ -232,7 +227,6 @@ class Matrix():
 
         return output
 
-    @log_output
     def create_food(self,
                     name: str,
                     value: str) -> str:
@@ -292,7 +286,6 @@ class Matrix():
         else:
             output += "The thing to focus is neither a person or a thing."
 
-    @log_output
     def remove_item_possession(self,
                                uid: UUID) -> str:
         """Remove the owner's possession of the given item
@@ -317,7 +310,6 @@ class Matrix():
 
         return output
 
-    @log_output
     def delete_thing(self,
                      thing_id: str) -> str:
         """Remove a thing from the matrix
@@ -362,7 +354,19 @@ class Matrix():
 
         return output
 
-    @log_output
+    @staticmethod
+    def update_person(person: Person) -> Person:
+        """Helper function for multiprocessing. no lambda :)
+
+        Args:
+            person (Person): peron object
+
+        Returns:
+            Person: return updated person object back after updating stats
+        """
+        person.run_one_turn()
+        return person
+
     def check_people(self) -> str:
         """Update all the person object in maxtrix
 
@@ -370,19 +374,26 @@ class Matrix():
             str: output string
         """
         output = ""
-        for key in list(self.people_dict):
-            person_object = self.people_dict[key]
-            person_object.run_one_turn()
 
-            if not person_object.alive:
-                self.delete_person(uid=person_object.uid.hex)
+        # multiprocessing to spread out checking to multiple cores
+        people = [self.people_dict[x] for x in self.people_dict]
+        p = Pool(psutil.cpu_count())
+        mp_results = p.map(self.update_person, people)
+
+        for person in mp_results:
+            # need to assign the values because the values from MP is no longer
+            # linked to the original objects
+            self.people_dict[person.uid] = person
+
+            if not person.alive:
+                self.delete_person(uid=person.uid.hex)
                 
                 # change log pref
                 if CFG.person_messages:
-                    output += f'{person_object.name} died.\n'
+                    output += f'{person.name} died.\n'
+
         return output
 
-    @log_output
     def check_things(self) -> str:
         """Update all the item object in matrix
 
@@ -572,7 +583,8 @@ class Matrix():
                                     x=Stats.TOTAL_TURNS.value,
                                     y=stat)
 
-            output_path = Path("data") / Path("graphs") / f"{stat}.png"
+            output_path = Path(CFG.default_matrix).parent \
+                / CFG.graph_dir / f"{stat}.png"
             fig = sns_plot.get_figure()
             fig.savefig(output_path)
             plt.clf()

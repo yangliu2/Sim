@@ -10,7 +10,7 @@ from panzoto.enums import Logging, Names
 from typing import Callable
 
 logging.basicConfig(
-	filename=f'{Names.PANZOTO.value}.log', 
+	filename=f'{CFG.log_dir}/{Names.PANZOTO.value}.log', 
 	filemode='a', 
 	level=logging.INFO,
 	format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
