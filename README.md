@@ -3,6 +3,29 @@ Pet project for human simulation
 
 Run `python main.py` to start the interaction in prompt
 
+# tests
+`bash test.sh` to run the tests.   
+Some functions are probablistic, and may fail at a small chance.  
+
+# to run 
+`python main.py` to run the main portal. 
+
+# generate cProfile graphs
+`bash graph_usage.sh`  
+
+# structure
+`data/` include all the saved data as a pickle file  
+`data/graphs/` are where graphs goes  
+`log/` include logging, cProfile files and graphs  
+`panzoto/` are the source code  
+`tests/` have the unit tests   
+`htmlcov/` coverage generated unittest coverage map  
+
+# use coverage to check unit test coverage  
+`coverage run -m unittest discover tests` to generaet .coverage file
+`coverage report -m` to generate a report in cli  
+`coverage html` to generate the `htmlcov/` folder with interactive map  
+
 # List of Commands
 **create_person**  
 `create_person <first name> <last name>`  
