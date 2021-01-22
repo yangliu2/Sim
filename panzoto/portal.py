@@ -1,5 +1,8 @@
 from pathlib import Path
 import pickle
+from rich.table import Table
+from rich import box
+from rich.console import Console
 from typing import Callable, Dict
 import panzoto.config as CFG
 from panzoto.matrix import Matrix
@@ -62,7 +65,6 @@ class Portal():
         }
         return commands
 
-    @log_output
     def show_commands(self) -> str:
         """Display a list of commands
 
@@ -71,7 +73,15 @@ class Portal():
         """
         output = ""
         commands = self.load_commands()
+        table = Table(title="Matrix Commands", box=box.ROUNDED)
+        table.add_column("Commands", 
+                          justify="left", 
+                          style="cyan")
+
         for key in commands:
-            output += key + "\n"
+             table.add_row(key)
+
+        console = Console()
+        console.print(table)
 
         return output
